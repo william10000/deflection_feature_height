@@ -17,20 +17,36 @@
 
 % written by William Wan - 2015-04-20
 
+% need to make this more elegant by calculating all the stiffness of all 
+% moduli and feature heights in one go
+
 close all;
 clear;
 
-h = 1e-6; % height of the pattern
-b = 5e-6; % short axis of the pattern
-d = 5e6-6; % long axis of the pattern
+L = 1e-6; % height of the feature
+b = 5e-6; % short axis of the pattern (characteristic length of pattern)
+d = 5e-6; % long axis of the pattern (not usually used here)
 E1 = 10000; % Young's modulus of soft gel
 E2 = 35000; % Young's modulus of soft gel
 
 % can be redfined to give us the exact values we want to calculate - more
 % points make for smoother plot
-h_arr = linspace(5e-6, 40e-6, 10); 
+dArr = linspace(5e-6, 40e-6, 10); 
 
-% crete array of Young's moduli
-E_arr = repmat([E1 E2], [length(h_arr) 1]);
+% LArr = linspace(0.5e-6, 2e-6, 10);
 
+% create array of Young's moduli
+% EArr = repmat([E1 E2], [length(dArr) length(LArr)]);
+
+% create array of stiffnesses
+% k = IRectCentroid(EArr, b, dArr, LArr);
+
+I = b*dArr.^3/12; % for rectangular cross section bent about centroid
+
+k1 = 3*E1*I/L;
+k2 = 3*E2*I/L;
+
+plot(dArr, k1, dArr, k2);
+xlabel('Pattern length (m)'); ylabel('Stiffness (N/m)');
+legend(['E = ' num2str(E1/1000) 'kPa'], ['E = ' num2str(E2/1000) 'kPa'],'Location', 'NorthWest');
 
