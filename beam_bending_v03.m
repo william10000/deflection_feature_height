@@ -21,7 +21,10 @@
 % moduli and feature heights in one go - makes plots of stiffness vs.
 % feature height & pattern cross section length
 
-% % 3d matricies are such that L varies along 1st dimension, d along 2nd, and
+% v03 - same as v02, but makes plots of stiffness vs. modulus & pattern cross section length
+% changed L from linspace ... to length*zeros(1, m)
+% changed array dimension to hold constant during plotting
+% 3d matricies are such that L varies along 1st dimension, d along 2nd, and
 % E along 3rd
 
 close all;
@@ -30,7 +33,8 @@ clear;
 % L = 1e-6; % (m) height of the feature
 % d = 5e-6; % (m) long axis of the pattern (not usually used here)
 
-L = linspace(1e-6, 2e-6, 10); % (m) height of the feature
+% L = linspace(1e-6, 2e-6, 10); % (m) height of the feature
+L = 1e-6 * ones(1, 10); % (m) height of the feature
 d = linspace(5e-6, 40e-6, 10);  % (m) long axis of the pattern (not usually used here)
 
 b = 5e-6; % (m) short axis of the pattern (characteristic length of pattern)
@@ -55,28 +59,22 @@ LArr3 = cat(3, LArr2, LArr2);
 % create array of stiffnesses
 k = IRectCentroid(EArr3, b, dArr3, LArr3); % can make other functions for different cross sections and bending axes
 
-figure; % 10kPa
-subplot(2, 3, 1);
-mesh(dArr3(:,:,1), LArr3(:,:,1), k(:,:,1)) 
-title(['E = ' num2str(E1/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
+% permute variables so that we putting matricies into 3D plots
+EPer = permute(EArr3(1, :, :), [2 3 1]);
+dPer = permute(dArr3(1, :, :), [2 3 1]);
+kPer = permute(k(1, :, :), [2 3 1]);
 
-subplot(2, 3, 2);
-surf(dArr3(:,:,1), LArr3(:,:,1), k(:,:,1)) 
-title(['E = ' num2str(E1/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
+figure;
+subplot(1, 3, 1);
+mesh(dPer, EPer, kPer) 
+xlabel('Pattern length (m)'); ylabel('Young''s modulus (Pa)'); zlabel('Stiffness (N/m)');
 
-subplot(2, 3, 3);
-plot3(dArr3(:,:,1), LArr3(:,:,1), k(:,:,1), 'b.') 
-title(['E = ' num2str(E1/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
+subplot(1, 3, 2);
+surf(dPer, EPer, kPer) 
+xlabel('Pattern length (m)'); ylabel('Young''s modulus (Pa)'); zlabel('Stiffness (N/m)');
 
-subplot(2, 3, 4);
-mesh(dArr3(:,:,2), LArr3(:,:,2), k(:,:,2)) 
-title(['E = ' num2str(E2/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
+subplot(1, 3, 3);
+plot3(dPer, EPer, kPer, 'b.') 
+xlabel('Pattern length (m)'); ylabel('Young''s modulus (Pa)'); zlabel('Stiffness (N/m)');
 
-subplot(2, 3, 5);
-surf(dArr3(:,:,2), LArr3(:,:,2), k(:,:,2)) 
-title(['E = ' num2str(E2/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
-
-subplot(2, 3, 6);
-plot3(dArr3(:,:,2), LArr3(:,:,2), k(:,:,2), 'b.') 
-title(['E = ' num2str(E2/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
 
