@@ -80,3 +80,13 @@ subplot(2, 3, 6);
 plot3(dArr3(:,:,2), LArr3(:,:,2), k(:,:,2), 'b.') 
 title(['E = ' num2str(E2/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
 
+figure;
+subplot(1, 2, 1);
+surf(dArr3(:,:,1), LArr3(:,:,1), k(:,:,1)) 
+title(['E = ' num2str(E1/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
+axis([0 4e-5 1e-6 2e-6 0 3000]);
+
+subplot(1, 2, 2);
+surf(dArr3(:,:,2), LArr3(:,:,2), k(:,:,2)) 
+title(['E = ' num2str(E2/1000) 'kPa']); xlabel('Pattern length (m)'); ylabel('Pattern height (m)'); zlabel('Stiffness (N/m)');
+axis([0 4e-5 1e-6 2e-6 0 3000]);
