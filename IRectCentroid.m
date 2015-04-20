@@ -3,10 +3,11 @@
 
 % William Wan - 2015-04-20
 
-% not working yet
+% at least one of these variables should be a scaler
+
 
 function k = IRectCentroid(E, b, d, L)
-    % E, d, L are NxNxN, b is a scaler    
-    I = b*d.^3/12;
+    % at least one of these variables should be a scaler, the rest are NxNxN
+    I = b.*d.^3/12;
     k = 3*E.*I./L.^3;
 end
