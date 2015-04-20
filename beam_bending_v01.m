@@ -23,11 +23,11 @@
 close all;
 clear;
 
-L = 1e-6; % height of the feature
-b = 5e-6; % short axis of the pattern (characteristic length of pattern)
-d = 5e-6; % long axis of the pattern (not usually used here)
-E1 = 10000; % Young's modulus of soft gel
-E2 = 35000; % Young's modulus of soft gel
+L = 1e-6; % (m) height of the feature
+b = 5e-6; % (m) short axis of the pattern (characteristic length of pattern)
+d = 5e-6; % (m) long axis of the pattern (not usually used here)
+E1 = 10000; % (Pa) Young's modulus of soft gel
+E2 = 35000; % (Pa) Young's modulus of soft gel
 
 % can be redfined to give us the exact values we want to calculate - more
 % points make for smoother plot
@@ -43,10 +43,9 @@ dArr = linspace(5e-6, 40e-6, 10);
 
 I = b*dArr.^3/12; % for rectangular cross section bent about centroid
 
-k1 = 3*E1*I/L;
-k2 = 3*E2*I/L;
+k1 = 3*E1*I/L^3;
+k2 = 3*E2*I/L^3;
 
 plot(dArr, k1, dArr, k2);
 xlabel('Pattern length (m)'); ylabel('Stiffness (N/m)');
 legend(['E = ' num2str(E1/1000) 'kPa'], ['E = ' num2str(E2/1000) 'kPa'],'Location', 'NorthWest');
-
